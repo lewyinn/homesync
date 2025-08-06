@@ -32,8 +32,8 @@ export default function ProductSection() {
     const categories = ["All", "Penthouse", "Apartment", "New"];
 
     return (
-        <section id="products" className="text-gray-200">
-            <div className="max-w-7xl md:max-w-5/6 bg-neutral-950 rounded-4xl mx-auto px-12 py-20">
+        <section id="products" className="text-gray-200 px-4 lg:px-0">
+            <div className="container mx-auto bg-neutral-950 rounded-4xl px-6 md:px-12 py-20 md:py-12">
                 {/* Inquiry Section */}
                 <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-8 mb-16">
                     <div className="grid md:grid-cols-2 gap-8 items-center">

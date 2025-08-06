@@ -9,7 +9,7 @@ export default function AboutUsSection() {
 
     return (
         <section id="about" className="text-black px-4 lg:px-0 py-28 md:py-36">
-            <div className="max-w-7xl md:max-w-5/6 mx-auto grid lg:grid-cols-2 gap-2 md:gap-12 items-start">
+            <div className="container mx-auto grid lg:grid-cols-2 gap-2 md:gap-12 items-start">
                 {/* Left Content */}
                 <div className='flex justify-start items-center space-x-1'>
                     <FaHome className='text-2xl font-medium' />
@@ -24,7 +24,7 @@ export default function AboutUsSection() {
                     </p>
                 </div>
             </div>
-            <div className="max-w-7xl md:max-w-5/6 mx-auto mt-16">
+            <div className="container mx-auto mt-16">
                 <div className="bg-black rounded-3xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between p-6 md:p-12">
                     {/* Left Image */}
                     <motion.div

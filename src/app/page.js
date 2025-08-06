@@ -8,27 +8,30 @@ import TestimonialSection from "@/components/TestimonialSection";
 
 export default function Home() {
   return (
-    <div className="px-4 md:px-6">
-      {/* Navbar */}
-      <Navbar />
+    <div className="overflow-x-hidden">
+      <div className="container mx-auto px-2 md:px-8">
+        {/* Navbar */}
+        <Navbar />
 
-      {/* Hero Section */}
-      <HeroSection />
+        {/* Hero Section */}
+        <HeroSection />
 
-      {/* About Section */}
-      <AboutUsSection />
+        {/* About Section */}
+        <AboutUsSection />
 
-      {/* Product Section */}
-      <ProductSection />
+        {/* Product Section */}
+        <ProductSection />
 
-      {/* Testimonials Section */}
-      <TestimonialSection />
+        {/* Testimonials Section */}
+        <TestimonialSection />
 
-      {/* Contact Section */}
-      <ContactSection />
+        {/* Contact Section */}
+        <ContactSection />
+      </div>
 
       {/* Footer */}
       <Footer />
+
     </div>
   );
 }

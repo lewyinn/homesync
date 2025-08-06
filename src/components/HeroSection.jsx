@@ -5,7 +5,7 @@ import { FiSearch } from "react-icons/fi";
 export default function HeroSection() {
     return (
         <section id="hero" className="text-black px-4 lg:px-0 py-28 md:py-36">
-            <div className="max-w-7xl md:max-w-5/6 mx-auto grid lg:grid-cols-2 gap-12 items-center">
+            <div className="container mx-auto grid lg:grid-cols-2 gap-12 items-center">
                 {/* Left Content */}
                 <div className="space-y-8">
                     <motion.h1
@@ -81,7 +81,7 @@ export default function HeroSection() {
             </div>
 
             {/* Featured Property at Bottom */}
-            <div className="max-w-7xl md:max-w-5/6 mx-auto mt-16 bg-black border border-neutral-800 rounded-xl overflow-hidden">
+            <div className="container mx-auto mt-16 bg-black border border-neutral-800 rounded-xl overflow-hidden">
                 <div className="md:flex">
                     <div className="md:w-1/3 bg-black p-6">
                         <h3 className="text-xl font-bold mb-2 text-lime-500">Perumnas Trimulyo</h3>

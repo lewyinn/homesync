@@ -48,7 +48,7 @@ export default function TestimonialSection() {
 
     return (
         <section id="testimonials" className="py-20 px-4 lg:px-0">
-            <div className="max-w-7xl md:max-w-5/6 mx-auto">
+            <div className="container mx-auto">
                 {/* Section Header */}
                 <div className="text-center mb-16">
                     <motion.h2
@@ -74,8 +74,7 @@ export default function TestimonialSection() {
                     <div className="flex justify-between items-center mb-8">
                         <button
                             onClick={prevTestimonial}
-                            className="p-2 rounded-full bg-neutral-800 text-lime-500 hover:bg-lime-500 hover:text-gray-900 transition-colors"
-                        >
+                            className="p-2 rounded-full bg-neutral-800 text-lime-500 hover:bg-lime-500 hover:text-gray-900 transition-colors">
                             <FiChevronLeft className="w-6 h-6" />
                         </button>
 
@@ -92,16 +91,14 @@ export default function TestimonialSection() {
 
                         <button
                             onClick={nextTestimonial}
-                            className="p-2 rounded-full bg-neutral-800 text-lime-500 hover:bg-lime-500 hover:text-gray-900 transition-colors"
-                        >
+                            className="p-2 rounded-full bg-neutral-800 text-lime-500 hover:bg-lime-500 hover:text-gray-900 transition-colors">
                             <FiChevronRight className="w-6 h-6" />
                         </button>
                     </div>
 
                     <motion.div
                         ref={constraintsRef}
-                        className="relative h-96"
-                    >
+                        className="relative h-[428px]">
                         {testimonials.map((testimonial, index) => (
                             <motion.div
                                 key={testimonial.id}

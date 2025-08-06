@@ -5,7 +5,7 @@ import { FiPhone, FiMapPin, FiMail, FiMessageSquare } from "react-icons/fi";
 export default function ContactSection() {
     return (
         <section id="contact" className="py-20 px-4 lg:px-0">
-            <div className="max-w-4xl md:max-w-5/6 mx-auto">
+            <div className="container mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

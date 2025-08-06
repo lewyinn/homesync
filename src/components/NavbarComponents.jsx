@@ -32,7 +32,7 @@ export default function Navbar() {
 
     return (
         <header className="fixed inset-x-0 top-6 z-50 h-16 px-4">
-            <nav className={`mx-auto flex h-full max-w-7xl md:max-w-5/6 items-center justify-between px-4 md:px-6 rounded-2xl bg-neutral-950 `}>
+            <nav className={`container mx-auto flex h-full items-center justify-between px-4 md:px-6 rounded-2xl bg-neutral-950 `}>
                 {/* Logo on the left */}
                 <Link href="/"
                     className="font-bold select-none flex justify-center items-center cursor-pointer">

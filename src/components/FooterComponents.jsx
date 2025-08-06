@@ -5,7 +5,7 @@ import { FiMessageSquare, FiMail, FiTwitter, FiInstagram } from "react-icons/fi"
 
 export default function Footer() {
     return (
-        <footer className="bg-neutral-950 text-gray-300 py-12 -mx-6 px-8 lg:px-0 border-t border-neutral-800">
+        <footer className="bg-neutral-950 text-gray-300 py-12 -mx-6 px-14 lg:px-0 border-t border-neutral-800">
             <div className="max-w-7xl mx-auto">
                 {/* Top Section */}
                 <div className="grid md:grid-cols-2 gap-12 mb-16">

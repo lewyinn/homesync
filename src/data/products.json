@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "slug": "553-chalybeate",
+        "title": "553 Chalybeate",
+        "location": "Woodland, Stivens 1013",
+        "year": "2021",
+        "size": "800 m²",
+        "desc": "Interior features gorgeous tongue & groove mill work, custom cabinetry, top of the line appliances in both kitchens.",
+        "badge": "New View",
+        "type": "House",
+        "cover": "https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1600&auto=format&fit=crop"
+    },
+    {
+        "id": 2,
+        "slug": "luxury-living",
+        "title": "Luxury Living",
+        "location": "Eastern Residence",
+        "year": "2020",
+        "size": "650 m²",
+        "desc": "Step into a world where elegance and ease come together in perfect harmony. Each home is designed with high-end finishes.",
+        "badge": "Penthouse",
+        "type": "Apartment",
+        "cover": "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1600&auto=format&fit=crop"
+    },
+    {
+        "id": 3,
+        "slug": "minimalist-haven",
+        "title": "Minimalist Haven",
+        "location": "Lesse, Clarung",
+        "year": "2022",
+        "size": "450 m²",
+        "desc": "Enjoy a sophisticated lifestyle with breathtaking city views, sleek design, and modern conveniences at your doorstep.",
+        "badge": "Apartment",
+        "type": "Apartment",
+        "cover": "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?q=80&w=1600&auto=format&fit=crop"
+    },
+    {
+        "id": 4,
+        "slug": "etalon-city",
+        "title": "Etalon City",
+        "location": "Jakarta Selatan",
+        "year": "2024",
+        "size": "900 m²",
+        "desc": "Hunian premium dengan akses strategis, desain kontemporer, dan fasilitas lengkap.",
+        "badge": "Featured",
+        "type": "Premium",
+        "cover": "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1600&auto=format&fit=crop"
+    }
+]

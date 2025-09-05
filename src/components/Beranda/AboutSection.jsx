@@ -1,9 +1,10 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaHome, FaUsers, FaBuilding, FaShoppingCart, FaArrowRight } from 'react-icons/fa';
+import { FaHome, FaUsers, FaBuilding, FaShoppingCart, FaArrowRight, FaArrowCircleDown } from 'react-icons/fa';
 import Image from 'next/image';
-import Building from '../../public/assets/Apartment.png';
+import Building from '../../../public/assets/Apartment.png';
+import { Link } from 'react-scroll';
 
 export default function AboutUsSection() {
 
@@ -13,14 +14,14 @@ export default function AboutUsSection() {
                 {/* Left Content */}
                 <div className='flex justify-start items-center space-x-1'>
                     <FaHome className='text-2xl font-medium' />
-                    <h2 className="text-2xl font-normal">
+                    <h2 className="text-2xl font-semibold">
                         About Us
                     </h2>
                 </div>
                 {/* Right Content */}
                 <div className='flex flex-col items-start space-y-4'>
                     <p className='text-4xl text-neutral-900 font-medium'>
-                        Endihom is the largest property website that has been helping millions of mars people to find their dream homes.
+                        Bersama HomeSync, Setiap Langkah Perjalanan Properti Anda Menjadi Mudah dan Menyenangkan.
                     </p>
                 </div>
             </div>
@@ -62,8 +63,16 @@ export default function AboutUsSection() {
                     <div className="absolute right-0 top-0 bottom-0 w-full md:w-1/2 bg-gradient-to-tr from-gray-800 to-black/90 rounded-l-full z-0"></div>
                 </div>
 
-                {/* Scroll Down Indicator */}
-                <div className="text-black text-2xl text-center mt-6 animate-bounce">▼</div>
+                <div className='flex flex-col items-center justify-center'>
+                    {/* Scroll Down Indicator */}
+                    <Link to="products" 
+                        smooth={true}
+                        duration={500}
+                        offset={-70}
+                        className="cursor-pointer text-black text-2xl text-center mt-6 animate-bounce">
+                            <FaArrowCircleDown />
+                    </Link>
+                </div>
             </div>
         </section>
     );
@@ -71,10 +80,10 @@ export default function AboutUsSection() {
 
 const StatItem = ({ icon, label, value }) => (
     <div className="flex flex-col items-center md:items-end space-y-2">
-        <div className="flex items-center space-x-2 text-lime-400 font-bold text-xl md:text-5xl">
+        <div className="flex items-center space-x-2 text-blue-600 font-bold text-xl md:text-5xl">
             {icon}
             <span className='text-lg md:text-4xl'>{value}</span>
         </div>
-        <span className="text-sm md:text-xl text-gray-400">{label}</span>
+        <span className="text-sm md:text-xl text-gray-300">{label}</span>
     </div>
 );

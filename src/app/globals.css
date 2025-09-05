@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+/* Hero background */
+.bg-hero {
+    background-image: url('/assets/hero/hero-img.jpg');
+    /* ✅ tanpa /public */
+    background-size: cover;
+    background-position: center;
+}
+
+/* Optional: efek glass untuk kartu */
+.glass {
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+}

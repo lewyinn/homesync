@@ -1,6 +1,7 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 import Head from "next/head";
 import "./globals.css";
+import PageTransition from "@/components/transitions/PageTransition";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -45,7 +46,9 @@ export default function RootLayout({ children }) {
         />
       </Head>
       <body className={`font-sans antialiased overflow-x-hidden`}>
-        {children}
+        <PageTransition>
+        {children} 
+        </PageTransition>
       </body>
     </html>
   );

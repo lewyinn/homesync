@@ -53,15 +53,15 @@ export default function TestimonialSection() {
                 <div className="text-center mb-16">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                         className="text-4xl font-bold mb-4"
                     >
-                        <span className="text-lime-500">Client</span> Experiences
+                        <span className="text-blue-700">Client</span> Experiences
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
+                        animate={{ opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-gray-400 max-w-2xl mx-auto"
                     >
@@ -74,7 +74,7 @@ export default function TestimonialSection() {
                     <div className="flex justify-between items-center mb-8">
                         <button
                             onClick={prevTestimonial}
-                            className="p-2 rounded-full bg-neutral-800 text-lime-500 hover:bg-lime-500 hover:text-gray-900 transition-colors">
+                            className="p-2 rounded-full bg-neutral-800 text-blue-600 hover:bg-blue-800 hover:text-gray-200 transition-colors">
                             <FiChevronLeft className="w-6 h-6" />
                         </button>
 
@@ -83,7 +83,7 @@ export default function TestimonialSection() {
                                 <button
                                     key={index}
                                     onClick={() => setCurrentIndex(index)}
-                                    className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-lime-500' : 'bg-neutral-700'
+                                    className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-blue-500' : 'bg-neutral-700'
                                         }`}
                                 />
                             ))}
@@ -91,7 +91,7 @@ export default function TestimonialSection() {
 
                         <button
                             onClick={nextTestimonial}
-                            className="p-2 rounded-full bg-neutral-800 text-lime-500 hover:bg-lime-500 hover:text-gray-900 transition-colors">
+                            className="p-2 rounded-full bg-neutral-800 text-blue-600 hover:bg-blue-800 hover:text-gray-200 transition-colors">
                             <FiChevronRight className="w-6 h-6" />
                         </button>
                     </div>
@@ -122,7 +122,7 @@ export default function TestimonialSection() {
                                     {[...Array(5)].map((_, i) => (
                                         <span
                                             key={i}
-                                            className={`text-xl ${i < testimonial.rating ? "text-lime-500" : "text-neutral-700"
+                                            className={`text-xl ${i < testimonial.rating ? "text-blue-600" : "text-neutral-700"
                                                 }`}
                                         >
                                             ★
@@ -135,7 +135,7 @@ export default function TestimonialSection() {
                                 </blockquote>
 
                                 <div>
-                                    <h3 className="text-xl font-bold text-lime-500">{testimonial.name}</h3>
+                                    <h3 className="text-xl font-bold text-blue-600">{testimonial.name}</h3>
                                     <p className="text-gray-400">{testimonial.position}</p>
                                 </div>
                             </motion.div>

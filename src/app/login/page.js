@@ -2,35 +2,39 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-
 export default function LoginPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const router = useRouter()
-    const sp = useSearchParams()
 
+
+    const getNextParam = () => {
+        if (typeof window === 'undefined') return null;
+        const params = new URLSearchParams(window.location.search);
+        return params.get('next');
+    };
 
     const onSubmit = async (e) => {
-        e.preventDefault()
-        setLoading(true)
-        setError('')
+        e.preventDefault();
+        setLoading(true);
+        setError('');
         try {
             const res = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
-            })
-            if (!res.ok) throw new Error((await res.json()).message || 'Login gagal')
-            const next = sp.get('next') || '/admin/dashboard'
-            router.push(next)
+            });
+            if (!res.ok) throw new Error((await res.json()).message || 'Login gagal');
+            const next = getNextParam() || '/admin/dashboard';
+            router.push(next);
         } catch (e) {
-            setError(e.message)
+            setError(e.message);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
 
     return (

@@ -64,11 +64,9 @@ export default function BlogDetailClient({ item, others }) {
                         className="lg:col-span-3"
                     >
                         <div className="prose prose-neutral max-w-none">
-                            {item.content?.map((para, i) => (
-                                <p key={i} className="text-black/80 leading-relaxed">
-                                    {para}
-                                </p>
-                            ))}
+                            <p className="text-black/80 leading-relaxed">
+                                {item.content}
+                            </p>
                         </div>
 
                         {/* CTA / Share */}

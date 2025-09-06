@@ -49,7 +49,7 @@ export default function Navbar() {
                 {/* Logo on the left */}
                 <Link href="/"
                     className="font-bold select-none flex justify-center items-center cursor-pointer">
-                    <span className="text-2xl text-blue-500">
+                    <span className="text-2xl text-blue-700">
                         Home<span className="text-gray-200">Sync</span>
                     </span>
                 </Link>

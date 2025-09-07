@@ -5,6 +5,7 @@ import { FaHome, FaUsers, FaBuilding, FaShoppingCart, FaArrowRight, FaArrowCircl
 import Image from 'next/image';
 import Building from '../../../public/assets/Apartment.png';
 import { Link } from 'react-scroll';
+import about from '@/data/home/about.json';
 
 export default function AboutUsSection() {
 
@@ -15,13 +16,13 @@ export default function AboutUsSection() {
                 <div className='flex justify-start items-center space-x-1'>
                     <FaHome className='text-2xl font-medium' />
                     <h2 className="text-2xl font-semibold">
-                        About Us
+                        {about.title}
                     </h2>
                 </div>
                 {/* Right Content */}
                 <div className='flex flex-col items-start space-y-4'>
                     <p className='text-4xl text-neutral-900 font-medium'>
-                        Bersama HomeSync, Setiap Langkah Perjalanan Properti Anda Menjadi Mudah dan Menyenangkan.
+                        {about.subtitle}
                     </p>
                 </div>
             </div>
@@ -49,9 +50,22 @@ export default function AboutUsSection() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="w-full md:w-1/2 mt-8 md:mt-0 flex flex-col items-center md:items-end z-10">
                         <div className="flex flex-wrap gap-6 md:gap-10 mb-6 justify-center md:justify-end">
-                            <StatItem icon={<FaUsers />} label="Customers" value="37K+" />
-                            <StatItem icon={<FaBuilding />} label="Units Ready" value="40K+" />
-                            <StatItem icon={<FaShoppingCart />} label="Units Sold" value="5K+" />
+                            {about.badges.map((feature, idx) => {
+                                const icons = {
+                                    FaUsers: FaUsers,
+                                    FaBuilding: FaBuilding,
+                                    FaShoppingCart: FaShoppingCart,
+                                };
+                                const IconComponent = icons[feature.icon] || FaHome;
+                                return (
+                                    <StatItem
+                                        key={idx}
+                                        icon={<IconComponent />}
+                                        label={feature.title}
+                                        value={feature.value}
+                                    />
+                                );
+                            })}
                         </div>
 
                         <button className="group inline-flex items-center gap-2 px-6 py-3 border border-white text-white rounded-full hover:bg-white hover:text-black transition">

@@ -1,0 +1,24 @@
+{
+  "visi": [
+    {
+      "title": "Visi",
+      "desc": "Menjadi platform properti paling dipercaya yang menyelaraskan manusia, hunian, dan teknologi—menciptakan pengalaman menemukan rumah yang elegan, cepat, dan transparan."
+    }
+  ],
+  "misi": [
+    {
+      "title": "Misi",
+      "badges": [
+        {
+          "title": "Menghadirkan listing akurat & up-to-date dengan kurasi ketat."
+        },
+        {
+          "title": "Memberikan pendampingan profesional yang ramah dan responsif."
+        },
+        {
+          "title": "Memaksimalkan nilai bagi pembeli, penjual, dan mitra."
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import posts from "@/data/posts";
+import headBlogs from '@/data/home/head-blogs.json';
 
 export default function BlogSection() {
     const blogsToShow = posts.slice(0, 3); // Show only the latest 3 posts
@@ -12,10 +13,10 @@ export default function BlogSection() {
                 <div className="mb-8 md:mb-10 flex items-end justify-between gap-4">
                     <div>
                         <h2 className="text-2xl md:text-3xl font-extrabold text-black">
-                            Latest <span className="text-blue-700">Articles</span>
+                            {headBlogs.title.split(' ')[0]} <span className="text-blue-700">{headBlogs.title.replace(headBlogs.title.split(' ')[0] + ' ', '')}</span>
                         </h2>
                         <p className="mt-2 text-black/70">
-                            Insight properti, tips pembelian, dan update pasar terbaru.
+                            {headBlogs.desc}
                         </p>
                     </div>
                     <Link

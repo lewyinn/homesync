@@ -4,12 +4,20 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Link as ScrollLink } from "react-scroll";
 import { FaStar } from "react-icons/fa";
+import hero from '@/data/home/hero.json';
 
 const pop = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 
 export default function Hero() {
     return (
-        <section className="px-4 lg:px-0 py-28 md:py-48">
+        <section
+            className="px-4 lg:px-0 py-28 md:py-48"
+            style={{
+                backgroundImage: `url(${hero.backgroundUrl})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}
+        >
             <div className="container mx-auto px-2 md:px-8">
                 <div className="relative z-[1] grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
                     {/* Left: Copy */}
@@ -19,18 +27,17 @@ export default function Hero() {
                         animate="show"
                         transition={{ staggerChildren: 0.06, duration: 0.6, ease: "easeOut" }}
                     >
-                        <motion.h1
-                            variants={pop}
-                            className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight"
-                        >
-                            Discover <span className="text-blue-700">Modern Homes</span>
-                            <br /> Tailored to Your{" "}
-                            <span className="underline decoration-blue-600">Lifestyle</span>
+                        <motion.h1 variants={pop}
+                            className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+                            <span>{hero.title.split(' ')[0]} </span>
+                            <span className="text-blue-700">{hero.title.replace(hero.title.split(' ')[0] + ' ', '')}</span>
+                            <br />
+                            <span>{hero.subtitle.split(' ')[0]} </span>
+                            <span className="underline decoration-blue-600">{hero.subtitle.replace(hero.subtitle.split(' ')[0] + ' ', '')}</span>
                         </motion.h1>
 
                         <motion.p variants={pop} className="mt-4 text-white/85 max-w-2xl">
-                            Temukan rumah strategis, nyaman, dan modern sesuai kebutuhan Anda.
-                            Beli, jual, atau sewa — semua lebih mudah dengan HomeSync.
+                            {hero.tagline}
                         </motion.p>
 
                         {/* CTA */}
@@ -59,23 +66,19 @@ export default function Hero() {
                         {/* Trust badge */}
                         <motion.div variants={pop} className="mt-5 flex items-center gap-3 text-white/85">
                             <FaStar className="h-5 w-5 text-blue-600" />
-                            <span>Trusted by 1,200+ homeowners • Rating 4.8/5</span>
+                            <span>{hero.badges}</span>
                         </motion.div>
 
                         {/* Bullet benefits */}
                         <motion.ul
                             variants={pop}
                             className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl text-sm">
-                            {[
-                                "Listing terkurasi & up-to-date",
-                                "Konsultan responsif & profesional",
-                                "Transaksi aman & transparan",
-                            ].map((item) => (
+                            {hero.features.map((feature, idx) => (
                                 <li
-                                    key={item}
+                                    key={idx}
                                     className="rounded-xl border border-white/10 bg-black/10 backdrop-blur-xs text-white px-4 py-3"
                                 >
-                                    {item}
+                                    {feature.title}
                                 </li>
                             ))}
                         </motion.ul>

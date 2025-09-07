@@ -1,0 +1,22 @@
+{
+    "title": "Our Values",
+    "desc": "Prinsip-prinsip yang kami pegang dalam melayani Anda.",
+    "value": [
+        {
+            "title": "Integrity",
+            "desc": "Jujur, jelas, dan bertanggung jawab."
+        },
+        {
+            "title": "Empathy",
+            "desc": "Mendengar kebutuhan, memberi solusi."
+        },
+        {
+            "title": "Excellence",
+            "desc": "Detail rapi, standar tinggi."
+        },
+        {
+            "title": "Guidance",
+            "desc": "Mengarahkan dengan data & pengalaman."
+        }
+    ]
+}

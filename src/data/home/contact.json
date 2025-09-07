@@ -1,0 +1,33 @@
+{
+  "title": "Get In Touch",
+  "desc": "Our team is ready to assist you with any inquiries about our properties and services.",
+  "telephone": [
+    {
+      "title": "Call Us",
+      "no": "+62 123 4567 890",
+      "schedule": "Mon–Fri, 9AM–6PM"
+    }
+  ],
+  "email": [
+    {
+      "title": "Email Us",
+      "email": "info@endihom.com",
+      "info": "Response within 24 hours"
+    }
+  ],
+  "sosmed": [
+    {
+      "title": "Social Media",
+      "instagram": "@homesync.id",
+      "facebook": "HomeSync",
+      "linkedin": "@homesync"
+    }
+  ],
+  "location": [
+    {
+      "title": "Visit Us",
+      "address": "123 Luxury Avenue",
+      "info": "Beverly Hills, CA 90210"
+    }
+  ]
+}

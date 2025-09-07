@@ -10,10 +10,18 @@ import {
     FiHome,
     FiCompass,
 } from "react-icons/fi";
+import hero from "@/data/about/hero.json";
+import story from "@/data/about/story.json";
+import whatwedo from "@/data/about/whatwedo.json";
+import visimisi from "@/data/about/visimisi.json";
+import values from "@/data/about/values.json";
+import milestone from "@/data/about/milestone.json";
 
 const pop = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 
 export default function AboutPage() {
+    const badgeIcons = [FiUsers, FiHome, FiTrendingUp];
+
     return (
         <main className="text-black">
             {/* HERO */}
@@ -26,27 +34,26 @@ export default function AboutPage() {
                         transition={{ staggerChildren: 0.06, duration: 0.6, ease: "easeOut" }}
                     >
                         <motion.h1 variants={pop} className="text-4xl md:text-5xl font-extrabold">
-                            About <span className="text-blue-700">HomeSync</span>
+                            {hero.title.split(' ')[0]} <span className="text-blue-700">{hero.title.split(' ')[1]}</span>
                         </motion.h1>
                         <motion.p variants={pop} className="mt-4 max-w-2xl text-black/80">
-                            Kami membantu orang menemukan hunian modern yang nyaman, strategis, dan
-                            sesuai gaya hidup—dengan proses yang transparan dan dukungan konsultan
-                            yang profesional.
+                            {hero.desc}
                         </motion.p>
 
-                        <motion.div
-                            variants={pop}
+                        <motion.div variants={pop}
                             className="mt-6 flex flex-wrap items-center gap-4 text-sm text-black/70"
                         >
-                            <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-black/5 backdrop-blur-md border border-black/10">
-                                <FiUsers /> 37K+ Customers
-                            </span>
-                            <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-black/5 backdrop-blur-md border border-black/10">
-                                <FiHome /> 40K+ Units Ready
-                            </span>
-                            <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-black/5 backdrop-blur-md border border-black/10">
-                                <FiTrendingUp /> 5K+ Units Sold
-                            </span>
+                            {hero.badges.map((badge, idx) => {
+                                const Icon = badgeIcons[idx] || FiAward;
+                                return (
+                                    <span
+                                        key={badge.title}
+                                        className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-black/5 backdrop-blur-md border border-black/10"
+                                    >
+                                        <Icon /> {badge.title}
+                                    </span>
+                                );
+                            })}
                         </motion.div>
                     </motion.div>
                 </div>
@@ -63,19 +70,10 @@ export default function AboutPage() {
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-2xl md:text-3xl font-extrabold">Our Story</h2>
-                            <p className="mt-3 text-black/80">
-                                HomeSync lahir dari kebutuhan untuk menyederhanakan proses jual-beli
-                                dan sewa properti. Berawal dari tim kecil konsultan properti dan
-                                software engineer, kami membangun platform yang mengedepankan
-                                verifikasi listing, data transparan, dan pengalaman pengguna yang
-                                intuitif.
-                            </p>
-                            <p className="mt-3 text-black/80">
-                                Hari ini, kami bermitra dengan pengembang, perbankan, serta layanan
-                                terkait untuk menghadirkan pilihan hunian yang berkualitas dan
-                                dapat dipercaya di berbagai kota besar.
-                            </p>
+                            <h2 className="text-2xl md:text-3xl font-extrabold">{story.title || "Our Story"}</h2>
+                            <p className="mt-3 text-black/80">{story.desc1}</p>
+                            <p className="mt-3 text-black/80">{story.desc2}</p>
+
                         </motion.div>
 
                         <motion.div
@@ -85,25 +83,18 @@ export default function AboutPage() {
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ duration: 0.6, delay: 0.1 }}
                         >
-                            <h3 className="text-xl md:text-2xl font-bold">What We Do</h3>
+                            <h3 className="text-xl md:text-2xl font-bold">{whatwedo.title || "What We Do"}</h3>
                             <ul className="mt-4 space-y-3 text-black/85">
-                                <li className="flex gap-3">
-                                    <FiShield className="mt-1 text-blue-600 shrink-0" />
-                                    Verifikasi listing dan kelengkapan legalitas untuk keamanan transaksi.
-                                </li>
-                                <li className="flex gap-3">
-                                    <FiCompass className="mt-1 text-blue-600 shrink-0" />
-                                    Rekomendasi hunian sesuai preferensi lokasi, budget, dan gaya hidup.
-                                </li>
-                                <li className="flex gap-3">
-                                    <FiAward className="mt-1 text-blue-600 shrink-0" />
-                                    Pendampingan konsultan dari survey, negosiasi, hingga serah terima.
-                                </li>
+                                {whatwedo?.badges?.map((b, i) => (
+                                    <li key={i} className="flex gap-3">
+                                        <FiShield className="mt-1 text-blue-600 shrink-0" />
+                                        {b.title}
+                                    </li>
+                                ))}
                             </ul>
                             <div className="mt-6 h-px bg-black/10" />
                             <p className="mt-4 text-sm text-black/60">
-                                *Kami terus mengembangkan fitur baru agar proses pencarian hingga transaksi
-                                makin cepat, aman, dan menyenangkan.
+                                {whatwedo?.note}
                             </p>
                         </motion.div>
                     </div>
@@ -121,11 +112,9 @@ export default function AboutPage() {
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-2xl md:text-3xl font-extrabold">Visi</h2>
+                            <h2 className="text-2xl md:text-3xl font-extrabold">{visimisi.visi?.[0]?.title || "Visi"}</h2>
                             <p className="mt-3 text-white/80">
-                                Menjadi platform properti paling dipercaya yang menyelaraskan manusia,
-                                hunian, dan teknologi—menciptakan pengalaman menemukan rumah yang
-                                elegan, cepat, dan transparan.
+                                {visimisi.visi?.[0]?.desc}
                             </p>
                         </motion.div>
 
@@ -136,20 +125,14 @@ export default function AboutPage() {
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ duration: 0.6, delay: 0.1 }}
                         >
-                            <h2 className="text-2xl md:text-3xl font-extrabold">Misi</h2>
+                            <h2 className="text-2xl md:text-3xl font-extrabold">{visimisi.misi?.[0]?.title || "Misi"}</h2>
                             <ul className="mt-4 space-y-3 text-white/85">
-                                <li className="flex gap-3">
-                                    <FiTarget className="mt-1 text-blue-600 shrink-0" />
-                                    Menghadirkan listing akurat & up-to-date dengan kurasi ketat.
-                                </li>
-                                <li className="flex gap-3">
-                                    <FiUsers className="mt-1 text-blue-600 shrink-0" />
-                                    Memberikan pendampingan profesional yang ramah dan responsif.
-                                </li>
-                                <li className="flex gap-3">
-                                    <FiTrendingUp className="mt-1 text-blue-600 shrink-0" />
-                                    Memaksimalkan nilai bagi pembeli, penjual, dan mitra.
-                                </li>
+                                {visimisi.misi?.[0]?.badges?.map((b, i) => (
+                                    <li key={i} className="flex gap-3">
+                                        <FiTarget className="mt-1 text-blue-600 shrink-0" />
+                                        {b.title}
+                                    </li>
+                                ))}
                             </ul>
                         </motion.div>
                     </div>
@@ -159,29 +142,34 @@ export default function AboutPage() {
             {/* VALUES */}
             <section className="py-16 md:py-20">
                 <div className="container mx-auto px-4 md:px-8">
-                    <h2 className="text-2xl md:text-3xl font-extrabold">Our Values</h2>
-                    <p className="mt-2 text-black/70">Prinsip-prinsip yang kami pegang dalam melayani Anda.</p>
+                    <h2 className="text-2xl md:text-3xl font-extrabold">{values.title}</h2>
+                    <p className="mt-2 text-black/70">{values.desc}</p>
 
                     <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                        {[
-                            { icon: <FiShield />, title: "Integrity", desc: "Jujur, jelas, dan bertanggung jawab." },
-                            { icon: <FiUsers />, title: "Empathy", desc: "Mendengar kebutuhan, memberi solusi." },
-                            { icon: <FiAward />, title: "Excellence", desc: "Detail rapi, standar tinggi." },
-                            { icon: <FiCompass />, title: "Guidance", desc: "Mengarahkan dengan data & pengalaman." },
-                        ].map((v) => (
-                            <motion.div
-                                key={v.title}
-                                className="rounded-2xl bg-black/5 backdrop-blur-md border border-black/10 p-5"
-                                initial={pop.hidden}
-                                whileInView={pop.show}
-                                viewport={{ once: true, amount: 0.2 }}
-                                transition={{ duration: 0.45 }}
-                            >
-                                <div className="text-blue-600 text-2xl">{v.icon}</div>
-                                <h3 className="mt-3 font-semibold">{v.title}</h3>
-                                <p className="text-black/75 text-sm mt-1">{v.desc}</p>
-                            </motion.div>
-                        ))}
+                        {values.value?.map((v, i) => {
+                            // Pilih icon sesuai value
+                            let Icon = FiAward;
+                            if (v.title === "Integrity") Icon = FiShield;
+                            else if (v.title === "Empathy") Icon = FiUsers;
+                            else if (v.title === "Excellence") Icon = FiTrendingUp;
+                            else if (v.title === "Guidance") Icon = FiCompass;
+                            return (
+                                <motion.div
+                                    key={v.title}
+                                    className="rounded-2xl bg-black/5 backdrop-blur-md border border-black/10 p-5"
+                                    initial={pop.hidden}
+                                    whileInView={pop.show}
+                                    viewport={{ once: true, amount: 0.2 }}
+                                    transition={{ duration: 0.45 }}
+                                >
+                                    <div className="text-blue-600 text-2xl">
+                                        <Icon />
+                                    </div>
+                                    <h3 className="mt-3 font-semibold">{v.title}</h3>
+                                    <p className="text-black/75 text-sm mt-1">{v.desc}</p>
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -193,45 +181,18 @@ export default function AboutPage() {
                     <div className="mt-6 relative">
                         <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-white/30" />
                         <div className="space-y-8">
-                            {[
-                                {
-                                    year: "2022",
-                                    title: "Mulai Beroperasi",
-                                    desc: "Mendisrupsi pencarian properti dengan verifikasi listing & UI modern.",
-                                    side: "left",
-                                },
-                                {
-                                    year: "2023",
-                                    title: "Kemitraan Strategis",
-                                    desc: "Kolaborasi dengan pengembang & lembaga keuangan terpilih.",
-                                    side: "right",
-                                },
-                                {
-                                    year: "2024",
-                                    title: "Ekspansi Multi-Kota",
-                                    desc: "Menjangkau lebih banyak wilayah dan pilihan properti.",
-                                    side: "left",
-                                },
-                                {
-                                    year: "2025",
-                                    title: "Smart Matching",
-                                    desc: "Rilis rekomendasi cerdas berbasis preferensi & aktivitas pengguna.",
-                                    side: "right",
-                                },
-                            ].map((t, idx) => (
+                            {milestone.timeline?.map((t, idx) => (
                                 <motion.div
                                     key={idx}
                                     initial={{ opacity: 0, y: 14 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.3 }}
                                     transition={{ duration: 0.45 }}
-                                    className={`relative grid md:grid-cols-2 gap-6 items-start ${t.side === "right" ? "md:text-left" : "md:text-right"
-                                        }`}
+                                    className={`relative grid md:grid-cols-2 gap-6 items-start ${idx % 2 === 1 ? "md:text-left" : "md:text-right"}`}
                                 >
-                                    <div className={`hidden md:block ${t.side === "right" ? "order-1" : "order-2"}`} />
+                                    <div className={`hidden md:block ${idx % 2 === 1 ? "order-1" : "order-2"}`} />
                                     <div
-                                        className={`relative rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 p-5 ${t.side === "right" ? "order-2 md:order-1" : "order-1 md:order-2"
-                                            }`}
+                                        className={`relative rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 p-5 ${idx % 2 === 1 ? "order-2 md:order-1" : "order-1 md:order-2"}`}
                                     >
                                         <span className="text-blue-600 text-sm font-semibold">{t.year}</span>
                                         <h3 className="text-lg font-semibold mt-1">{t.title}</h3>

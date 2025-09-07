@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { FiPhone, FiMapPin, FiMail, FiMessageSquare } from "react-icons/fi";
+import contact from '@/data/home/contact.json'
 
 export default function ContactSection() {
     const mapSrc =
@@ -18,10 +19,10 @@ export default function ContactSection() {
                     className="text-center mb-16"
                 >
                     <h2 className="text-4xl font-bold mb-4">
-                        <span className="text-blue-700">Get In</span> Touch
+                        <span className="text-blue-700">{contact.title.split(' ')[0]}</span> {contact.title.replace(contact.title.split(' ')[0] + ' ', '')}
                     </h2>
                     <p className="text-black/70 max-w-lg mx-auto">
-                        Our team is ready to assist you with any inquiries about our properties and services.
+                        {contact.desc}
                     </p>
                 </motion.div>
 
@@ -34,50 +35,55 @@ export default function ContactSection() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="space-y-6"
                     >
-                        {[
-                            {
-                                icon: <FiPhone className="w-5 h-5" />,
-                                title: "Call Us",
-                                lines: ["+1 (234) 567-8900", "Mon–Fri, 9AM–6PM"],
-                            },
-                            {
-                                icon: <FiMail className="w-5 h-5" />,
-                                title: "Email Us",
-                                lines: ["info@endihom.com", "Response within 24 hours"],
-                            },
-                            {
-                                icon: <FiMessageSquare className="w-5 h-5" />,
-                                title: "Social Media",
-                                lines: ["Instagram · Facebook · LinkedIn"],
-                            },
-                        ].map((item, idx) => (
-                            <div
-                                key={idx}
-                                className="flex items-start gap-4 rounded-xl bg-black/5 backdrop-blur-md border border-black/15 p-5"
-                            >
+                        {contact.telephone.map((item, idx) => (
+                            <div key={idx} className="flex items-start gap-4 rounded-xl bg-black/5 backdrop-blur-md border border-black/15 p-5">
                                 <div className="p-3 bg-blue-500/15 rounded-lg text-blue-600 mt-1">
-                                    {item.icon}
+                                    <FiPhone className="w-5 h-5" />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold mb-1 text-black">{item.title}</h3>
-                                    {item.lines.map((l, i) => (
-                                        <p key={i} className="text-black/70 text-sm">{l}</p>
-                                    ))}
+                                    <p className="text-black/70 text-sm">{item.no}</p>
+                                    <p className="text-black/70 text-sm">{item.schedule}</p>
                                 </div>
                             </div>
                         ))}
-
-                        {/* Address card (glass) */}
-                        <div className="flex items-start gap-4 rounded-xl bg-black/5 backdrop-blur-md border border-black/15 p-5">
-                            <div className="p-3 bg-blue-500/15 rounded-lg text-blue-600 mt-1">
-                                <FiMapPin className="w-5 h-5" />
+                        {contact.email.map((item, idx) => (
+                            <div key={idx} className="flex items-start gap-4 rounded-xl bg-black/5 backdrop-blur-md border border-black/15 p-5">
+                                <div className="p-3 bg-blue-500/15 rounded-lg text-blue-600 mt-1">
+                                    <FiMail className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold mb-1 text-black">{item.title}</h3>
+                                    <p className="text-black/70 text-sm">{item.email}</p>
+                                    <p className="text-black/70 text-sm">{item.info}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className="text-lg font-semibold mb-1 text-black">Visit Us</h3>
-                                <p className="text-black/70 text-sm">123 Luxury Avenue</p>
-                                <p className="text-black/70 text-sm">Beverly Hills, CA 90210</p>
+                        ))}
+                        {contact.sosmed.map((item, idx) => (
+                            <div key={idx} className="flex items-start gap-4 rounded-xl bg-black/5 backdrop-blur-md border border-black/15 p-5">
+                                <div className="p-3 bg-blue-500/15 rounded-lg text-blue-600 mt-1">
+                                    <FiMessageSquare className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold mb-1 text-black">{item.title}</h3>
+                                    <p className="text-black/70 text-sm">Instagram: {item.instagram}</p>
+                                    <p className="text-black/70 text-sm">Facebook: {item.facebook}</p>
+                                    <p className="text-black/70 text-sm">LinkedIn: {item.linkedin}</p>
+                                </div>
                             </div>
-                        </div>
+                        ))}
+                        {contact.location.map((item, idx) => (
+                            <div key={idx} className="flex items-start gap-4 rounded-xl bg-black/5 backdrop-blur-md border border-black/15 p-5">
+                                <div className="p-3 bg-blue-500/15 rounded-lg text-blue-600 mt-1">
+                                    <FiMapPin className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold mb-1 text-black">{item.title}</h3>
+                                    <p className="text-black/70 text-sm">{item.address}</p>
+                                    <p className="text-black/70 text-sm">{item.info}</p>
+                                </div>
+                            </div>
+                        ))}
                     </motion.div>
 
                     {/* Map + overlay card */}
@@ -117,7 +123,7 @@ export default function ContactSection() {
                                         Open in Google Maps
                                     </a>
                                     <a
-                                        href="mailto:info@endihom.com"
+                                        href={`mailto:${contact.email[0]?.email || 'info@endihom.com'}`}
                                         className="inline-flex items-center px-3 py-2 rounded-lg bg-black/10 text-black border border-black/15 hover:bg-black/20 transition"
                                     >
                                         Email Us

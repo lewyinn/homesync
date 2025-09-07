@@ -5,6 +5,7 @@ import {Link as ScrollLink} from "react-scroll";
 import { FiHome, FiStar } from "react-icons/fi";
 import products from "@/data/products.json";
 import { useState } from "react";
+import inquiry from '@/data/home/inquiry.json';
 
 export default function ProductSection() {
     const ALL = "All";
@@ -22,10 +23,10 @@ export default function ProductSection() {
                 <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-8 mb-16">
                     <div className="grid md:grid-cols-2 gap-8 items-center">
                         <div>
-                            <h3 className="text-blue-600 text-xl font-bold mb-2">Direct Inquiry</h3>
-                            <h2 className="text-3xl font-bold mb-4">Meet our professional consultant for free!</h2>
+                            <h3 className="text-blue-600 text-xl font-bold mb-2">{inquiry.tagline}</h3>
+                            <h2 className="text-3xl font-bold mb-4">{inquiry.title}</h2>
                             <p className="text-gray-400 mb-6">
-                                You can ask any questions related to property with our professional
+                                {inquiry.subtitle}
                             </p>
                             <ScrollLink 
                                 to="contact"

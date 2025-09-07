@@ -1,0 +1,21 @@
+{
+  "title": "About Us",
+  "subtitle": "Bersama HomeSync, Setiap Langkah Perjalanan Properti Anda Menjadi Mudah dan Menyenangkan.",
+  "badges": [
+    {
+      "icon": "FaUsers",
+      "title": "Customers",
+      "value": "37K+"
+    },
+    {
+      "icon": "FaBuilding",
+      "title": "Units Ready",
+      "value": "40K+"
+    },
+    {
+      "icon": "FaShoppingCart",
+      "title": "Units Sold",
+      "value": "5K+"
+    }
+  ]
+}

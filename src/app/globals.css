@@ -2,7 +2,6 @@
 
 /* Hero background */
 .bg-hero {
-    background-image: url('/assets/hero/hero-img.jpg');
     /* ✅ tanpa /public */
     background-size: cover;
     background-position: center;

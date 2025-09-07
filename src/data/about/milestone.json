@@ -1,0 +1,24 @@
+{
+    "timeline": [
+        {
+            "title": "Mulai Beroperasi",
+            "year": "2022",
+            "desc": "Mendisrupsi pencarian properti dengan verifikasi listing & UI modern."
+        },
+        {
+            "title": "Kemitraan Strategis",
+            "year": "2023",
+            "desc": "Kolaborasi dengan pengembang & lembaga keuangan terpilih."
+        },
+        {
+            "title": "Ekspansi Multi-Kota",
+            "year": "2024",
+            "desc": "Menjangkau lebih banyak wilayah dan pilihan properti."
+        },
+        {
+            "title": "Smart Matching",
+            "year": "2025",
+            "desc": "Rilis rekomendasi cerdas berbasis preferensi & aktivitas pengguna."
+        }
+    ]
+}

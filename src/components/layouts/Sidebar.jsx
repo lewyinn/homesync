@@ -88,7 +88,7 @@ export default function Sidebar() {
 
                         <div
                             className={`ml-7 overflow-hidden transition-all duration-300 ease-in-out
-                                ${berandaOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                ${berandaOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'}`}>
                             <Link href="/admin/beranda/hero"
                                 className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/beranda/hero')
                                     ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
@@ -101,11 +101,23 @@ export default function Sidebar() {
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
                                 About
                             </Link>
-                            <Link href="/admin/beranda/cta"
-                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/beranda/cta')
+                            <Link href="/admin/beranda/inquiry"
+                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/beranda/inquiry')
                                     ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-                                Call to Action
+                                Inquiry
+                            </Link>
+                            <Link href="/admin/beranda/head-testimonial"
+                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/beranda/head-testimonial')
+                                    ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
+                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
+                                Header Testimonial
+                            </Link>
+                            <Link href="/admin/beranda/head-blogs"
+                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/beranda/head-blogs')
+                                    ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
+                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
+                                Header Blogs
                             </Link>
                             <Link href="/admin/beranda/contact"
                                 className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/beranda/contact')
@@ -135,19 +147,19 @@ export default function Sidebar() {
                                 className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/hero')
                                     ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-                                Hero
+                                Hero About
                             </Link>
                             <Link href="/admin/about/story"
                                 className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/story')
                                     ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-                                Story
+                                Our Story
                             </Link>
-                            <Link href="/admin/about/works"
-                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/works')
+                            <Link href="/admin/about/what-we-do"
+                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/what-we-do')
                                     ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-                                Works
+                                What We Do
                             </Link>
                             <Link href="/admin/about/visi-misi"
                                 className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/visi-misi')
@@ -159,20 +171,20 @@ export default function Sidebar() {
                                 className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/values')
                                     ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-                                Values
+                                Our Values
                             </Link>
                             <Link href="/admin/about/milestones"
                                 className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/milestones')
                                     ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-                                Milestones
+                                Milestones / Timeline
                             </Link>
-                            <Link href="/admin/about/milestones"
-                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/milestones')
+                            {/* <Link href="/admin/about/cta"
+                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/cta')
                                     ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-                                Milestones
-                            </Link>
+                                Call To Action (CTA)
+                            </Link> */}
                         </div>
                     </div>
 

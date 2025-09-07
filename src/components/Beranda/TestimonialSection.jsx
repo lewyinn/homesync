@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import headTestimonial from '@/data/home/head-testimonial.json';
 
 export default function TestimonialSection() {
     const testimonials = [
@@ -55,9 +56,8 @@ export default function TestimonialSection() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl font-bold mb-4"
-                    >
-                        <span className="text-blue-700">Client</span> Experiences
+                        className="text-4xl font-bold mb-4">
+                        <span className="text-blue-700">{headTestimonial.title.split(' ')[0]}</span> {headTestimonial.title.replace(headTestimonial.title.split(' ')[0] + ' ', '')}
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -65,7 +65,7 @@ export default function TestimonialSection() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-gray-400 max-w-2xl mx-auto"
                     >
-                        See what people say about their journey with Endihom
+                        {headTestimonial.desc}
                     </motion.p>
                 </div>
 

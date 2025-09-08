@@ -1,44 +1,35 @@
 import { NextResponse } from "next/server";
-import {
-    readAllPosts,
-    writeAllPosts,
-    toSlug,
-    ensureUniqueSlug,
-} from "@/lib/postsStore.server";
+import { readArray, writeArray, toSlug, ensureUniqueSlug, nextId } from "@/lib/jsonStore.server";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-    const items = await readAllPosts();
+    const items = await readArray("posts");
     items.sort((a, b) => Number(b.id) - Number(a.id));
     return NextResponse.json(items);
 }
 
 export async function POST(req) {
     const body = await req.json();
-    const items = await readAllPosts();
+    const items = await readArray("posts");
 
-    // cari id max lalu +1 (aman meskipun data acak)
-    const nextId =
-        items.reduce((m, it) => Math.max(m, Number(it.id) || 0), 0) + 1;
-
-    // slug otomatis dari title
-    const baseSlug = toSlug(body.title || `post-${nextId}`);
+    const id = nextId(items);
+    const baseSlug = toSlug(body.title || `post-${id}`);
     const slug = ensureUniqueSlug(items, baseSlug);
 
     const newItem = {
-        id: nextId,
+        id,
         slug,
         title: body.title || "",
         tag: body.tag || "",
         date: body.date || "",
         read: body.read || "",
         excerpt: body.excerpt || "",
-        cover: body.cover || "", // URL Blob
-        content: body.content || "", // TEXT (bukan array)
+        cover: body.cover || "",
+        content: body.content || "", // pakai textarea
     };
 
     items.push(newItem);
-    await writeAllPosts(items);
+    await writeArray("posts", items);
     return NextResponse.json(newItem, { status: 201 });
 }

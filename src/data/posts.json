@@ -1,46 +1,46 @@
 [
-    {
-        "id": 1,
-        "slug": "smart-buying-checklist",
-        "title": "Smart Buying Checklist: 7 Hal yang Wajib Dicek",
-        "tag": "Guides",
-        "date": "Aug 14, 2025",
-        "read": "6 min read",
-        "excerpt": "Sebelum DP, pastikan legalitas, akses, hingga potensi kenaikan nilai. Ini daftar ringkas yang bisa kamu ikuti.",
-        "cover": "https://images.unsplash.com/photo-1499914485622-a88fac536970?w=1600&q=80&auto=format&fit=crop",
-        "content": "Etalon City menonjolkan desain kontemporer dengan elemen green living.\nFasilitas: taman atap, sky lounge, gym natural lighting.\nKesimpulan: estetika bertemu fungsi untuk urbanites."
-    },
-    {
-        "id": 2,
-        "slug": "q3-market-outlook-tren-hunian-modern-di-jakarta-mantapp",
-        "title": "Q3 Market Outlook: Tren Hunian Modern di Jakarta mantapp",
-        "tag": "News",
-        "date": "Aug 02, 2025",
-        "read": "4 min read",
-        "excerpt": "Permintaan unit compact premium meningkat, terutama di kawasan CBD satelit dengan akses transportasi publik.",
-        "cover": "https://images.unsplash.com/photo-1460317442991-0ec209397118?w=1600&q=80&auto=format&fit=crop",
-        "content": "Membeli properti bukan hanya soal harga. Ada beberapa checklist agar keputusanmu solid.\n1) Cek legalitas (SHM/HGB), 2) Akses & transportasi, 3) Kualitas bangunan, 4) Potensi nilai sewa & jual, 5) Biaya rutin, 6) Fasilitas sekitar, 7) Reputasi pengembang.\nTips: bawa checklist saat survei agar penilaian objektif."
-    },
-    {
-        "id": 3,
-        "slug": "small-space-styling",
-        "title": "Small Space, Big Style: 10 Ide Penataan Apartemen",
-        "tag": "Tips",
-        "date": "Jul 21, 2025",
-        "read": "8 min read",
-        "excerpt": "Mulai dari zoning sederhana sampai pemilihan warna dan material agar ruang terasa lega dan rapi.",
-        "cover": "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=1600&q=80&auto=format&fit=crop",
-        "content": "Triwulan ini, tren bergeser ke unit compact premium.\nFaktor pendorong: akses MRT/LRT, coworking terdekat, dan fasilitas lifestyle.\nImplikasi: proyek mixed-use punya daya tarik lebih besar."
-    },
-    {
-        "id": 4,
-        "slug": "inside-etalon-city-konsep-desain-fasilitas",
-        "title": "Inside Etalon City: Konsep, Desain, & Fasilitas",
-        "tag": "Inspiration",
-        "date": "Jun 28, 2025",
-        "read": "5 min read",
-        "excerpt": "Mengulik estetika kontemporer dan fasilitas yang menyatu dengan gaya hidup urban masa kini.",
-        "cover": "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1600&q=80&auto=format&fit=crop",
-        "content": "Kuncinya zoning, storage tersembunyi, dan warna netral.\nGunakan cermin besar, furnitur multifungsi, serta pencahayaan berlapis.\nHindari dekor berlebihan; jaga visual tetap airy."
-    }
+  {
+    "id": 1,
+    "slug": "smart-buying-checklist",
+    "title": "Smart Buying Checklist: 7 Hal yang Wajib Dicek",
+    "tag": "Guides",
+    "date": "Aug 14, 2025",
+    "read": "6 min read",
+    "excerpt": "Sebelum DP, pastikan legalitas, akses, hingga potensi kenaikan nilai. Ini daftar ringkas yang bisa kamu ikuti.",
+    "cover": "https://images.unsplash.com/photo-1499914485622-a88fac536970?w=1600&q=80&auto=format&fit=crop",
+    "content": "Etalon City menonjolkan desain kontemporer dengan elemen green living.\nFasilitas: taman atap, sky lounge, gym natural lighting.\nKesimpulan: estetika bertemu fungsi untuk urbanites."
+  },
+  {
+    "id": 2,
+    "slug": "q3-market-outlook-tren-hunian-modern-di-jakarta-mantapp",
+    "title": "Q3 Market Outlook: Tren Hunian Modern di Jakarta mantapp",
+    "tag": "News",
+    "date": "Aug 02, 2025",
+    "read": "4 min read",
+    "excerpt": "Permintaan unit compact premium meningkat, terutama di kawasan CBD satelit dengan akses transportasi publik.",
+    "cover": "https://images.unsplash.com/photo-1460317442991-0ec209397118?w=1600&q=80&auto=format&fit=crop",
+    "content": "Membeli properti bukan hanya soal harga. Ada beberapa checklist agar keputusanmu solid.\n1) Cek legalitas (SHM/HGB), 2) Akses & transportasi, 3) Kualitas bangunan, 4) Potensi nilai sewa & jual, 5) Biaya rutin, 6) Fasilitas sekitar, 7) Reputasi pengembang.\nTips: bawa checklist saat survei agar penilaian objektif."
+  },
+  {
+    "id": 3,
+    "slug": "small-space-styling",
+    "title": "Small Space, Big Style: 10 Ide Penataan Apartemen",
+    "tag": "Tips",
+    "date": "Jul 21, 2025",
+    "read": "8 min read",
+    "excerpt": "Mulai dari zoning sederhana sampai pemilihan warna dan material agar ruang terasa lega dan rapi.",
+    "cover": "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=1600&q=80&auto=format&fit=crop",
+    "content": "Triwulan ini, tren bergeser ke unit compact premium.\nFaktor pendorong: akses MRT/LRT, coworking terdekat, dan fasilitas lifestyle.\nImplikasi: proyek mixed-use punya daya tarik lebih besar."
+  },
+  {
+    "id": 4,
+    "slug": "inside-etalon-city-konsep-desain-fasilitasss",
+    "title": "Inside Etalon City: Konsep, Desain, & Fasilitasss",
+    "tag": "Inspiration",
+    "date": "Jun 28, 2025",
+    "read": "5 min read",
+    "excerpt": "Mengulik estetika kontemporer dan fasilitas yang menyatu dengan gaya hidup urban masa kini.",
+    "cover": "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1600&q=80&auto=format&fit=crop",
+    "content": "Kuncinya zoning, storage tersembunyi, dan warna netral.\nGunakan cermin besar, furnitur multifungsi, serta pencahayaan berlapis.\nHindari dekor berlebihan; jaga visual tetap airy."
+  }
 ]

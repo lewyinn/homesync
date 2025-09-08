@@ -1,24 +1,16 @@
 import { NextResponse } from "next/server";
-import { readAllPosts, writeAllPosts, toSlug } from "@/lib/postsStore";
+import {
+    readAllPosts,
+    writeAllPosts,
+    toSlug,
+    ensureUniqueSlug,
+} from "@/lib/postsStore.server";
 
 export const runtime = "nodejs";
 
-function ensureUniqueSlug(items, base, excludeId = null) {
-    let slug = base || "post";
-    let counter = 2;
-    const taken = new Set(
-        items
-            .filter((p) => (excludeId == null ? true : p.id !== excludeId))
-            .map((p) => p.slug)
-    );
-    while (taken.has(slug)) slug = `${base}-${counter++}`;
-    return slug;
-}
-
 export async function GET() {
     const items = await readAllPosts();
-    // bisa di-sort terbaru dulu, mis. berdasarkan id desc
-    items.sort((a, b) => b.id - a.id);
+    items.sort((a, b) => Number(b.id) - Number(a.id));
     return NextResponse.json(items);
 }
 
@@ -26,9 +18,11 @@ export async function POST(req) {
     const body = await req.json();
     const items = await readAllPosts();
 
-    const nextId = (items.at(-1)?.id ?? 0) + 1;
+    // cari id max lalu +1 (aman meskipun data acak)
+    const nextId =
+        items.reduce((m, it) => Math.max(m, Number(it.id) || 0), 0) + 1;
 
-    // slug selalu otomatis dari title
+    // slug otomatis dari title
     const baseSlug = toSlug(body.title || `post-${nextId}`);
     const slug = ensureUniqueSlug(items, baseSlug);
 
@@ -37,11 +31,11 @@ export async function POST(req) {
         slug,
         title: body.title || "",
         tag: body.tag || "",
-        date: body.date || "",      // biarkan input manual string (sesuai format kamu)
-        read: body.read || "",      // mis: "5 min read"
+        date: body.date || "",
+        read: body.read || "",
         excerpt: body.excerpt || "",
-        cover: body.cover || "",    // path public: /uploads/xxx
-        content: body.content || "",// TEXT (bukan array)
+        cover: body.cover || "", // URL Blob
+        content: body.content || "", // TEXT (bukan array)
     };
 
     items.push(newItem);

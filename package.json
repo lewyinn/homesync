@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@tinymce/tinymce-react": "^6.3.0",
+    "@vercel/blob": "^1.1.1",
+    "@vercel/kv": "^3.0.0",
     "framer-motion": "^12.23.6",
     "jose": "^6.1.0",
     "next": "15.4.2",

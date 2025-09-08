@@ -13,8 +13,7 @@ export default function BlogDetailClient({ item, others }) {
                     <motion.div
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                    >
+                        transition={{ duration: 0.5 }}>
                         <Link
                             href="/blogs"
                             className="text-black/70 hover:text-black transition"

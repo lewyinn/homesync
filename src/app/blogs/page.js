@@ -1,18 +1,53 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiSearch, FiX } from "react-icons/fi";
-import posts from "@/data/posts.json";
 
 const ALL = "All";
-const TAGS = [ALL, "Tips", "News", "Guides", "Inspiration"];
+const STATIC_TAGS = [ALL, "Tips", "News", "Guides", "Inspiration"]; // fallback kalau mau tetap ada opsi default
 
+async function jsonSafe(res) {
+    const text = await res.text();
+    try { return JSON.parse(text); } catch { return []; }
+}
 
 export default function BlogsPage() {
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const [query, setQuery] = useState("");
     const [activeTag, setActiveTag] = useState(ALL);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                setLoading(true);
+                const res = await fetch("/api/posts", { cache: "no-store" });
+                const data = await jsonSafe(res);
+                const arr = Array.isArray(data) ? data : [];
+                // sort terbaru dulu (id lebih besar dianggap terbaru)
+                arr.sort((a, b) => Number(b.id) - Number(a.id));
+                setPosts(arr);
+            } catch (e) {
+                console.error(e);
+                setPosts([]);
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
+
+    // Buat daftar tags dinamis (dengan fallback static)
+    const tags = useMemo(() => {
+        const set = new Set(STATIC_TAGS); // mulai dari static supaya opsi tetap ada
+        for (const p of posts) if (p?.tag) set.add(p.tag);
+        // pastikan ALL selalu di depan
+        const arr = Array.from(set).filter(t => t !== ALL);
+        arr.sort(); // opsional
+        return [ALL, ...arr];
+    }, [posts]);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -20,18 +55,17 @@ export default function BlogsPage() {
             const matchTag = activeTag === ALL || p.tag === activeTag;
             const matchQuery =
                 q.length === 0 ||
-                p.title.toLowerCase().includes(q) ||
-                p.excerpt.toLowerCase().includes(q) ||
-                p.tag.toLowerCase().includes(q);
+                p.title?.toLowerCase().includes(q) ||
+                p.excerpt?.toLowerCase().includes(q) ||
+                p.tag?.toLowerCase().includes(q);
             return matchTag && matchQuery;
         });
-    }, [query, activeTag]);
+    }, [posts, query, activeTag]);
 
     return (
         <main className="text-black min-h-screen pt-8 pb-16">
             {/* Top banner */}
             <section className="relative overflow-hidden">
-                {/* <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(132,204,22,0.12),transparent_80%)]" /> */}
                 <div className="container mx-auto px-4 md:px-8 pt-16 md:pt-32">
                     <motion.div
                         initial={{ opacity: 0, y: 18 }}
@@ -78,7 +112,7 @@ export default function BlogsPage() {
 
                             {/* Tag filters */}
                             <div className="flex flex-wrap gap-2">
-                                {TAGS.map((t) => {
+                                {tags.map((t) => {
                                     const active = activeTag === t;
                                     return (
                                         <button
@@ -100,13 +134,13 @@ export default function BlogsPage() {
 
                         {/* Meta info */}
                         <div className="mt-2 text-xs text-black/60">
-                            {filtered.length} result{filtered.length !== 1 ? "s" : ""}{" "}
-                            {activeTag !== ALL && (
+                            {loading ? "Loading…" : `${filtered.length} result${filtered.length !== 1 ? "s" : ""}`}
+                            {activeTag !== ALL && !loading && (
                                 <span className="ml-1">
                                     • tag: <span className="text-blue-400">{activeTag}</span>
                                 </span>
                             )}
-                            {query && (
+                            {query && !loading && (
                                 <span className="ml-1">
                                     • search: <span className="text-blue-400">“{query}”</span>
                                 </span>
@@ -119,7 +153,11 @@ export default function BlogsPage() {
             {/* Cards */}
             <section className="mt-10">
                 <div className="container mx-auto px-4 md:px-8">
-                    {filtered.length === 0 ? (
+                    {loading ? (
+                        <div className="rounded-2xl bg-black/5 backdrop-blur-md border border-black/10 p-8 text-center">
+                            <p className="text-black/80">Memuat artikel…</p>
+                        </div>
+                    ) : filtered.length === 0 ? (
                         <div className="rounded-2xl bg-black/5 backdrop-blur-md border border-black/10 p-8 text-center">
                             <p className="text-black/80">
                                 Tidak ada artikel yang cocok. Coba ubah kata kunci atau pilih tag lain.
@@ -134,7 +172,6 @@ export default function BlogsPage() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.45, delay: idx * 0.06 }}
                                 >
-                                    {/* === Your requested blog card markup === */}
                                     <article className="group overflow-hidden rounded-2xl bg-black/5 backdrop-blur-md border border-black/15 hover:border-black/25 transition">
                                         <div className="aspect-[16/10] overflow-hidden">
                                             <img

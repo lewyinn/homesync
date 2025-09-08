@@ -130,7 +130,7 @@ export default function AboutPage() {
                                 {visimisi.misi?.[0]?.badges?.map((b, i) => (
                                     <li key={i} className="flex gap-3">
                                         <FiTarget className="mt-1 text-blue-600 shrink-0" />
-                                        {b.title}
+                                        {b.title} ok
                                     </li>
                                 ))}
                             </ul>

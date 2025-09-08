@@ -1,30 +1,21 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import { put } from "@vercel/blob";
 
 export const runtime = "nodejs";
 
 export async function POST(req) {
     const formData = await req.formData();
     const file = formData.get("file");
-
-    if (!file) {
-        return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
-    }
+    if (!file) return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
 
     const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const size = bytes.byteLength;
+    if (size > 10 * 1024 * 1024) return NextResponse.json({ error: "File too large" }, { status: 413 });
+    if (!/\.(png|jpe?g|gif|webp)$/i.test(file.name || "")) return NextResponse.json({ error: "Invalid extension" }, { status: 400 });
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "products");
-    await fs.mkdir(uploadDir, { recursive: true });
+    const clean = (file.name || "cover").replace(/\s+/g, "-").toLowerCase();
+    const pathname = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${clean}`;
 
-    // sanitize filename basic
-    const base = path.basename(file.name).replace(/\s+/g, "-");
-    const filename = `${Date.now()}-${base}`;
-    const filepath = path.join(uploadDir, filename);
-
-    await fs.writeFile(filepath, buffer);
-
-    // return public path
-    return NextResponse.json({ url: `/uploads/products/${filename}` });
+    const { url } = await put(pathname, bytes, { access: "public", addRandomSuffix: false });
+    return NextResponse.json({ url });
 }

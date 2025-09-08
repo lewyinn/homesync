@@ -1,37 +1,24 @@
 import { NextResponse } from "next/server";
-import { readAll, writeAll, toSlug } from "@/lib/productsStore";
+import { readAllProducts, writeAllProducts, toSlug, ensureUniqueSlug, nextId } from "@/lib/productsStore.server";
 
 export const runtime = "nodejs";
 
-function ensureUniqueSlug(items, base, excludeId = null) {
-    let slug = base;
-    let counter = 2;
-    const taken = new Set(
-        items
-            .filter(p => (excludeId == null ? true : p.id !== excludeId))
-            .map(p => p.slug)
-    );
-    while (taken.has(slug)) slug = `${base}-${counter++}`;
-    return slug;
-}
-
 export async function GET() {
-    const items = await readAll();
+    const items = await readAllProducts();
+    items.sort((a, b) => Number(b.id) - Number(a.id));
     return NextResponse.json(items);
 }
 
 export async function POST(req) {
     const body = await req.json();
-    const items = await readAll();
+    const items = await readAllProducts();
 
-    const nextId = (items.at(-1)?.id ?? 0) + 1;
-
-    // SELALU generate dari title (abaikan body.slug)
-    const baseSlug = toSlug(body.title || `product-${nextId}`);
+    const id = nextId(items);
+    const baseSlug = toSlug(body.title || `product-${id}`);
     const slug = ensureUniqueSlug(items, baseSlug);
 
     const newItem = {
-        id: nextId,
+        id,
         slug,
         title: body.title || "",
         location: body.location || "",
@@ -40,10 +27,10 @@ export async function POST(req) {
         desc: body.desc || "",
         badge: body.badge || "",
         type: body.type || "",
-        cover: body.cover || "",
+        cover: body.cover || "", // URL dari Vercel Blob
     };
 
     items.push(newItem);
-    await writeAll(items);
+    await writeAllProducts(items);
     return NextResponse.json(newItem, { status: 201 });
 }

@@ -1,32 +1,25 @@
 import { NextResponse } from "next/server";
-import { readAllPosts, writeAllPosts, toSlug } from "@/lib/postsStore";
-import { promises as fs } from "fs";
-import path from "path";
+import {
+    readAllPosts,
+    writeAllPosts,
+    toSlug,
+    ensureUniqueSlug,
+} from "@/lib/postsStore.server";
+// (opsional) hapus file blob saat delete:
+// import { del } from "@vercel/blob";
 
 export const runtime = "nodejs";
 
-function ensureUniqueSlug(items, base, excludeId = null) {
-    let slug = base || "post";
-    let counter = 2;
-    const taken = new Set(
-        items
-            .filter((p) => (excludeId == null ? true : p.id !== excludeId))
-            .map((p) => p.slug)
-    );
-    while (taken.has(slug)) slug = `${base}-${counter++}`;
-    return slug;
-}
-
-export async function GET(req, ctx) {
-    const { id } = await ctx.params;
+export async function GET(_req, { params }) {
+    const { id } = params;
     const items = await readAllPosts();
     const item = items.find((p) => p.id === Number(id));
     if (!item) return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json(item);
 }
 
-export async function PUT(req, ctx) {
-    const { id } = await ctx.params;
+export async function PUT(req, { params }) {
+    const { id } = params;
     const body = await req.json();
     const items = await readAllPosts();
     const idx = items.findIndex((p) => p.id === Number(id));
@@ -34,7 +27,7 @@ export async function PUT(req, ctx) {
 
     const current = items[idx];
 
-    // regenerate slug hanya kalau title berubah
+    // regenerate slug jika title berubah
     let newSlug = current.slug;
     if (body.title && body.title !== current.title) {
         const base = toSlug(body.title);
@@ -51,26 +44,19 @@ export async function PUT(req, ctx) {
     return NextResponse.json(items[idx]);
 }
 
-export async function DELETE(req, ctx) {
-    const { id } = await ctx.params;
+export async function DELETE(_req, { params }) {
+    const { id } = params;
     const items = await readAllPosts();
     const idx = items.findIndex((p) => p.id === Number(id));
     if (idx === -1) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-    const [deletedItem] = items.splice(idx, 1);
+    const [deleted] = items.splice(idx, 1);
 
-    // kalau cover disimpan di /public/uploads, hapus file-nya (opsional)
-    if (deletedItem.cover && deletedItem.cover.startsWith("/uploads/posts")) {
-        try {
-            const rel = deletedItem.cover.replace(/^\//, "");
-            const filePath = path.join(process.cwd(), "public", rel);
-            await fs.unlink(filePath);
-        } catch (e) {
-            // abaikan error if not found
-            console.error("Failed to delete cover:", e);
-        }
-    }
+    // (opsional) kalau mau hapus blob juga:
+    // if (deleted.cover?.includes(".blob.vercel-storage.com")) {
+    //   try { await del(deleted.cover); } catch (e) { console.error(e); }
+    // }
 
     await writeAllPosts(items);
-    return NextResponse.json(deletedItem);
+    return NextResponse.json(deleted);
 }

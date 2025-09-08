@@ -2,12 +2,17 @@
 
 import Link from "next/link";
 import React, { useState, useMemo, useEffect } from "react";
-import { FaChevronDown, FaChevronLeft, FaChevronRight, FaChevronUp, FaEdit, FaEye, FaPlusSquare, FaSearch } from "react-icons/fa";
+import { FaChevronDown, FaChevronLeft, FaChevronRight, FaChevronUp, FaEdit, FaPlusSquare, FaSearch } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
+
+async function jsonSafe(res) {
+    const text = await res.text();
+    try { return JSON.parse(text); } catch { return { error: text || res.statusText }; }
+}
 
 function DeleteButton({ id, onDeleted }) {
     const [loading, setLoading] = useState(false);
@@ -27,12 +32,13 @@ function DeleteButton({ id, onDeleted }) {
             try {
                 setLoading(true);
                 const res = await fetch(`/api/admin/posts/${id}`, { method: "DELETE" });
-                if (!res.ok) throw new Error("Delete failed");
+                const data = await jsonSafe(res);
+                if (!res.ok) throw new Error(data?.error || "Delete failed");
                 MySwal.fire("Deleted!", "Your post has been deleted.", "success");
                 onDeleted?.(id);
             } catch (e) {
                 console.error(e);
-                MySwal.fire("Error!", "Failed to delete post.", "error");
+                MySwal.fire("Error!", e.message || "Failed to delete post.", "error");
             } finally {
                 setLoading(false);
             }
@@ -40,12 +46,7 @@ function DeleteButton({ id, onDeleted }) {
     }
 
     return (
-        <button
-            onClick={onDelete}
-            disabled={loading}
-            className="text-red-600 hover:text-red-700 p-1 disabled:opacity-60"
-            title="Delete"
-        >
+        <button onClick={onDelete} disabled={loading} className="text-red-600 hover:text-red-700 p-1 disabled:opacity-60" title="Delete">
             <FiTrash2 className="w-4 h-4" />
         </button>
     );
@@ -67,10 +68,12 @@ export default function PostsPage() {
             try {
                 setLoading(true);
                 const res = await fetch("/api/admin/posts", { cache: "no-store" });
-                const data = await res.json();
+                const data = await jsonSafe(res);
+                if (!res.ok) throw new Error(data?.error || "Failed to fetch posts");
                 setItems(Array.isArray(data) ? data : []);
             } catch (e) {
                 console.error(e);
+                MySwal.fire("Error!", e.message || "Failed to load posts", "error");
             } finally {
                 setLoading(false);
             }
@@ -78,25 +81,19 @@ export default function PostsPage() {
     }, []);
 
     const handleSort = (field) => {
-        if (sortField === field) {
-            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-        } else {
-            setSortField(field);
-            setSortDirection("asc");
-        }
+        if (sortField === field) setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        else { setSortField(field); setSortDirection("asc"); }
     };
 
     const filteredData = useMemo(() => {
         const term = searchTerm.toLowerCase();
-        return items.filter((item) => {
-            return (
-                item.title?.toLowerCase().includes(term) ||
-                item.tag?.toLowerCase().includes(term) ||
-                item.excerpt?.toLowerCase().includes(term) ||
-                item.date?.toLowerCase().includes(term) ||
-                item.slug?.toLowerCase().includes(term)
-            );
-        });
+        return items.filter((item) =>
+            item.title?.toLowerCase().includes(term) ||
+            item.tag?.toLowerCase().includes(term) ||
+            item.excerpt?.toLowerCase().includes(term) ||
+            item.date?.toLowerCase().includes(term) ||
+            item.slug?.toLowerCase().includes(term)
+        );
     }, [items, searchTerm]);
 
     const sortedData = useMemo(() => {
@@ -118,9 +115,9 @@ export default function PostsPage() {
     const paginatedData = sortedData.slice(startIndex, startIndex + itemsPerPage);
 
     const sortIcon = (field) =>
-        sortField === field ? (
-            sortDirection === "asc" ? <FaChevronUp className="w-4 h-4" /> : <FaChevronDown className="w-4 h-4" />
-        ) : null;
+        sortField === field
+            ? (sortDirection === "asc" ? <FaChevronUp className="w-4 h-4" /> : <FaChevronDown className="w-4 h-4" />)
+            : null;
 
     const handleDeleted = (deletedId) => {
         setItems((prev) => {
@@ -139,19 +136,13 @@ export default function PostsPage() {
                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-0">Posts Management</h1>
                         <p className="text-sm text-gray-500 dark:text-gray-400">Manage your blog posts</p>
                     </div>
-                    <Link
-                        href="/admin/blogs/new"
-                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                    >
+                    <Link href="/admin/blogs/new" className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                         <FaPlusSquare className="w-4 h-4 mr-2" />
                         <span className="text-sm font-medium">Add Post</span>
                     </Link>
                 </div>
 
-                <button
-                    onClick={() => setShowMobileSearch(!showMobileSearch)}
-                    className="sm:hidden flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
-                >
+                <button onClick={() => setShowMobileSearch(!showMobileSearch)} className="sm:hidden flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg">
                     <FaSearch className="w-4 h-4" />
                     <span>Search Feature</span>
                 </button>
@@ -164,10 +155,7 @@ export default function PostsPage() {
                         type="text"
                         placeholder="Search posts..."
                         value={searchTerm}
-                        onChange={(e) => {
-                            setSearchTerm(e.target.value);
-                            setCurrentPage(1);
-                        }}
+                        onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
@@ -179,41 +167,17 @@ export default function PostsPage() {
                         <thead className="bg-gray-50 dark:bg-gray-700">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Cover</th>
-                                <th
-                                    onClick={() => handleSort("title")}
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
-                                >
-                                    <div className="flex items-center space-x-1">
-                                        <span>Title</span>
-                                        {sortIcon("title")}
-                                    </div>
+                                <th onClick={() => handleSort("title")} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <div className="flex items-center space-x-1"><span>Title</span>{sortIcon("title")}</div>
                                 </th>
-                                <th
-                                    onClick={() => handleSort("tag")}
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
-                                >
-                                    <div className="flex items-center space-x-1">
-                                        <span>Tag</span>
-                                        {sortIcon("tag")}
-                                    </div>
+                                <th onClick={() => handleSort("tag")} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <div className="flex items-center space-x-1"><span>Tag</span>{sortIcon("tag")}</div>
                                 </th>
-                                <th
-                                    onClick={() => handleSort("date")}
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
-                                >
-                                    <div className="flex items-center space-x-1">
-                                        <span>Date</span>
-                                        {sortIcon("date")}
-                                    </div>
+                                <th onClick={() => handleSort("date")} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <div className="flex items-center space-x-1"><span>Date</span>{sortIcon("date")}</div>
                                 </th>
-                                <th
-                                    onClick={() => handleSort("read")}
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
-                                >
-                                    <div className="flex items-center space-x-1">
-                                        <span>Read</span>
-                                        {sortIcon("read")}
-                                    </div>
+                                <th onClick={() => handleSort("read")} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <div className="flex items-center space-x-1"><span>Read</span>{sortIcon("read")}</div>
                                 </th>
                                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                             </tr>
@@ -225,11 +189,7 @@ export default function PostsPage() {
                                 <tr><td className="px-6 py-6 text-sm text-gray-500 dark:text-gray-400" colSpan={6}>No data</td></tr>
                             ) : paginatedData.map((p) => (
                                 <tr key={p.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td className="px-6 py-4">
-                                        {p.cover ? (
-                                            <img src={p.cover} alt="" className="w-16 h-12 object-cover rounded border" />
-                                        ) : <span className="text-xs text-gray-400">—</span>}
-                                    </td>
+                                    <td className="px-6 py-4">{p.cover ? <img src={p.cover} alt="" className="w-16 h-12 object-cover rounded border" /> : <span className="text-xs text-gray-400">—</span>}</td>
                                     <td className="px-6 py-4">
                                         <div className="text-sm font-medium text-gray-900 dark:text-white">{p.title}</div>
                                         <div className="text-xs text-gray-500 dark:text-gray-400">{p.slug}</div>

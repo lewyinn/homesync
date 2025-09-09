@@ -1,133 +1,89 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FaCheckCircle, FaChevronCircleLeft } from "react-icons/fa";
-import { FiUploadCloud } from "react-icons/fi";
+import { FaCheckCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
 const MySwal = withReactContent(Swal);
 
-export default function PageAboutHero() {
-    const router = useRouter();
+export default function PageAboutWhatWeDo() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [form, setForm] = useState({ title: "", badges: [{ title: "" }], note: "" });
 
-    const [form, setForm] = useState({
-        title: "",
-        badges: [{ title: ""}],
-        note: "",
-    });
-
-    // Load data
     useEffect(() => {
         (async () => {
             try {
                 setLoading(true);
-                const res = await fetch("/api/admin/about/what-we-do", { cache: "no-store" });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Failed to fetch what-we-do");
+                const r = await fetch("/api/admin/about/what-we-do", { cache: "no-store" });
+                const d = await r.json();
+                if (!r.ok) throw new Error(d.error || "Failed to fetch data");
                 setForm({
-                    title: data.title ?? "",
-                    badges: Array.isArray(data.badges) && data.badges.length ? data.badges : [{ title: "" }],
-                    note: data.note ?? ""
+                    title: d.title ?? "",
+                    badges: Array.isArray(d.badges) && d.badges.length ? d.badges : [{ title: "" }],
+                    note: d.note ?? "",
                 });
-            } catch (e) {
-                MySwal.fire("Error!", "Failed to load what-we-do data.", "error");
+            } catch {
+                MySwal.fire("Error", "Failed to load data.", "error");
             } finally {
                 setLoading(false);
             }
         })();
     }, []);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleArrayChange = (field, idx, key, value) => {
-        setForm((prev) => {
-            const arr = [...prev[field]];
-            arr[idx] = { ...arr[idx], [key]: value };
-            return { ...prev, [field]: arr };
+    const handleChange = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+    const handleBadge = (i, v) =>
+        setForm((p) => {
+            const arr = [...p.badges]; arr[i] = { title: v }; return { ...p, badges: arr };
         });
-    };
-
-    const addItem = (field, empty) => {
-        setForm((prev) => ({ ...prev, [field]: [...prev[field], empty] }));
-    };
-
-    const removeItem = (field, idx, empty) => {
-        setForm((prev) => {
-            const arr = prev[field].filter((_, i) => i !== idx);
-            return { ...prev, [field]: arr.length ? arr : [empty] };
+    const add = () => setForm((p) => ({ ...p, badges: [...p.badges, { title: "" }] }));
+    const remove = (i) =>
+        setForm((p) => {
+            const arr = p.badges.filter((_, idx) => idx !== i);
+            return { ...p, badges: arr.length ? arr : [{ title: "" }] };
         });
-    };
 
-    const handleSubmit = async (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setSaving(true);
         try {
-            const res = await fetch("/api/admin/about/what-we-do", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form)
+            const r = await fetch("/api/admin/about/what-we-do", {
+                method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form),
             });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || "Failed to save");
-
-            MySwal.fire("Success!", "What We Do updated successfully!", "success").then(() => router.refresh());
-        } catch (error) {
-            MySwal.fire("Error!", error.message, "error");
+            const d = await r.json();
+            if (!r.ok) throw new Error(d.error || "Failed to save");
+            MySwal.fire("Success", "What We Do updated!", "success");
+        } catch (err) {
+            MySwal.fire("Error", err.message, "error");
         } finally {
             setSaving(false);
         }
     };
 
-    if (loading) return <div className="p-6 text-center">Loading about data...</div>;
+    if (loading) return <div className="p-6 text-center">Loading…</div>;
 
     return (
         <main className="p-6">
-            <div className="flex justify-between items-start gap-4 mb-2">
-                <h1 className="text-2xl font-bold mb-6">Edit About What We Do</h1>
-            </div>
-
+            <h1 className="text-2xl font-bold mb-6">Edit What We Do</h1>
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 lg:p-8">
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    {/* Title */}
-                    <div className="md:col-span-2">
-                        <label className="block text-sm font-medium mb-1">Title</label>
-                        <input type="text" name="title" value={form.title} onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg" />
-                    </div>
-
-                    {/* Badges */}
-                    <div className="md:col-span-2">
-                        <h2 className="font-semibold mb-2">Badges</h2>
-                        {form.badges.map((f, idx) => (
-                            <div key={idx} className="grid grid-cols-1 gap-2 mb-2">
-                                <input type="text" placeholder="Subtitle" value={f.title}
-                                    onChange={(e) => handleArrayChange("badges", idx, "title", e.target.value)}
-                                    className="px-3 py-2 border rounded-lg" />
+                <form onSubmit={submit} className="grid grid-cols-1 gap-6">
+                    <input className="w-full px-4 py-2 border rounded-lg" name="title" value={form.title} onChange={handleChange} placeholder="Title" />
+                    <div>
+                        <div className="flex items-center justify-between mb-2">
+                            <h2 className="font-semibold">Badges</h2>
+                            <button type="button" onClick={add} className="text-blue-600">+ Add</button>
+                        </div>
+                        {form.badges.map((b, i) => (
+                            <div key={i} className="flex gap-2 mb-2">
+                                <input className="w-full px-3 py-2 border rounded" value={b.title}
+                                    onChange={(e) => handleBadge(i, e.target.value)} placeholder="Badge" />
+                                <button type="button" onClick={() => remove(i)} className="px-3 rounded bg-red-500 text-white">-</button>
                             </div>
                         ))}
                     </div>
-
-                    
-                    {/* Notes */}
-                    <div className="md:col-span-2">
-                        <label className="block text-sm font-medium mb-1">Notes</label>
-                        <input type="text" name="note" value={form.note} onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg" />
-                    </div>
-
-                    <div className="md:col-span-2 flex justify-end">
-                        <button type="submit" disabled={saving}
-                            className="px-6 py-2 bg-blue-600 text-white rounded flex items-center gap-2">
-                            {saving ? "Saving..." : "Save Changes"}
-                            <FaCheckCircle />
+                    <input className="w-full px-4 py-2 border rounded-lg" name="note" value={form.note} onChange={handleChange} placeholder="Note" />
+                    <div className="flex justify-end">
+                        <button disabled={saving} className="px-6 py-2 bg-blue-600 text-white rounded flex items-center gap-2">
+                            {saving ? "Saving..." : "Save Changes"} <FaCheckCircle />
                         </button>
                     </div>
                 </form>

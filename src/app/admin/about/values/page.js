@@ -1,133 +1,95 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FaCheckCircle, FaChevronCircleLeft } from "react-icons/fa";
-import { FiUploadCloud } from "react-icons/fi";
+import { FaCheckCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
 const MySwal = withReactContent(Swal);
 
 export default function PageAboutValues() {
-    const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [form, setForm] = useState({ title: "", desc: "", value: [{ title: "", desc: "" }] });
 
-    const [form, setForm] = useState({
-        title: "",
-        desc: "",
-        value: [{ title: "", desc: ""}],
-    });
-
-    // Load data
     useEffect(() => {
         (async () => {
             try {
                 setLoading(true);
-                const res = await fetch("/api/admin/about/values", { cache: "no-store" });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Failed to fetch values");
+                const r = await fetch("/api/admin/about/values", { cache: "no-store" });
+                const d = await r.json();
+                if (!r.ok) throw new Error(d.error || "Failed to fetch values");
                 setForm({
-                    title: data.title ?? "",
-                    value: Array.isArray(data.value) && data.value.length ? data.value : [{ title: "" }],
-                    desc: data.desc ?? ""
+                    title: d.title ?? "",
+                    desc: d.desc ?? "",
+                    value: Array.isArray(d.value) && d.value.length ? d.value : [{ title: "", desc: "" }],
                 });
-            } catch (e) {
-                MySwal.fire("Error!", "Failed to load values data.", "error");
+            } catch {
+                MySwal.fire("Error", "Failed to load values data.", "error");
             } finally {
                 setLoading(false);
             }
         })();
     }, []);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleArrayChange = (field, idx, key, value) => {
-        setForm((prev) => {
-            const arr = [...prev[field]];
-            arr[idx] = { ...arr[idx], [key]: value };
-            return { ...prev, [field]: arr };
+    const handleChange = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+    const handleArrayChange = (i, k, v) =>
+        setForm((p) => {
+            const arr = [...p.value];
+            arr[i] = { ...arr[i], [k]: v };
+            return { ...p, value: arr };
         });
-    };
-
-    const addItem = (field, empty) => {
-        setForm((prev) => ({ ...prev, [field]: [...prev[field], empty] }));
-    };
-
-    const removeItem = (field, idx, empty) => {
-        setForm((prev) => {
-            const arr = prev[field].filter((_, i) => i !== idx);
-            return { ...prev, [field]: arr.length ? arr : [empty] };
+    const add = () => setForm((p) => ({ ...p, value: [...p.value, { title: "", desc: "" }] }));
+    const remove = (i) =>
+        setForm((p) => {
+            const arr = p.value.filter((_, idx) => idx !== i);
+            return { ...p, value: arr.length ? arr : [{ title: "", desc: "" }] };
         });
-    };
 
-    const handleSubmit = async (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setSaving(true);
         try {
-            const res = await fetch("/api/admin/about/values", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form)
+            const r = await fetch("/api/admin/about/values", {
+                method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form),
             });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || "Failed to save");
-
-            MySwal.fire("Success!", "Values updated successfully!", "success").then(() => router.refresh());
-        } catch (error) {
-            MySwal.fire("Error!", error.message, "error");
+            const d = await r.json();
+            if (!r.ok) throw new Error(d.error || "Failed to save");
+            MySwal.fire("Success", "Values updated!", "success");
+        } catch (err) {
+            MySwal.fire("Error", err.message, "error");
         } finally {
             setSaving(false);
         }
     };
 
-    if (loading) return <div className="p-6 text-center">Loading about data...</div>;
+    if (loading) return <div className="p-6 text-center">Loading…</div>;
 
     return (
         <main className="p-6">
-            <div className="flex justify-between items-start gap-4 mb-2">
-                <h1 className="text-2xl font-bold mb-6">Edit About Our Values</h1>
-            </div>
-
+            <h1 className="text-2xl font-bold mb-6">Edit Our Values</h1>
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 lg:p-8">
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    {/* Title */}
-                    <div className="md:col-span-2">
-                        <label className="block text-sm font-medium mb-1">Title</label>
-                        <input type="text" name="title" value={form.title} onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg" />
-                    </div>
-
-                    {/* Description */}
-                    <div className="md:col-span-2">
-                        <label className="block text-sm font-medium mb-1">Description</label>
-                        <input type="text" name="desc" value={form.desc} onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg" />
-                    </div>
-
-
-                    {/* Badges */}
-                    <div className="md:col-span-2">
-                        <h2 className="font-semibold mb-2">Badges</h2>
-                        {form.value.map((f, idx) => (
-                            <div key={idx} className="grid grid-cols-3 gap-2 mb-2">
-                                <input type="text" placeholder="Subtitle" value={f.title}
-                                    onChange={(e) => handleArrayChange("value", idx, "title", e.target.value)}
-                                    className="px-3 py-2 border rounded-lg" />
+                <form onSubmit={submit} className="grid grid-cols-1 gap-6">
+                    <input className="w-full px-4 py-2 border rounded-lg" name="title" value={form.title} onChange={handleChange} placeholder="Title" />
+                    <input className="w-full px-4 py-2 border rounded-lg" name="desc" value={form.desc} onChange={handleChange} placeholder="Description" />
+                    <div>
+                        <div className="flex items-center justify-between mb-2">
+                            <h2 className="font-semibold">Values</h2>
+                            <button type="button" onClick={add} className="text-blue-600">+ Add</button>
+                        </div>
+                        {form.value.map((v, i) => (
+                            <div key={i} className="grid md:grid-cols-2 gap-2 mb-2">
+                                <input className="px-3 py-2 border rounded-lg" placeholder="Title"
+                                    value={v.title} onChange={(e) => handleArrayChange(i, "title", e.target.value)} />
+                                <input className="px-3 py-2 border rounded-lg" placeholder="Description"
+                                    value={v.desc} onChange={(e) => handleArrayChange(i, "desc", e.target.value)} />
+                                <div className="md:col-span-2 text-right">
+                                    <button type="button" onClick={() => remove(i)} className="px-3 py-1 bg-red-500 text-white rounded">Remove</button>
+                                </div>
                             </div>
                         ))}
                     </div>
-
-                    <div className="md:col-span-2 flex justify-end">
-                        <button type="submit" disabled={saving}
-                            className="px-6 py-2 bg-blue-600 text-white rounded flex items-center gap-2">
-                            {saving ? "Saving..." : "Save Changes"}
-                            <FaCheckCircle />
+                    <div className="flex justify-end">
+                        <button disabled={saving} className="px-6 py-2 bg-blue-600 text-white rounded flex items-center gap-2">
+                            {saving ? "Saving..." : "Save Changes"} <FaCheckCircle />
                         </button>
                     </div>
                 </form>

@@ -1,43 +1,17 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { readDoc, writeDoc } from "@/lib/blobJsonStore.server";
 
-const dataPath = path.join(process.cwd(), "src", "data", "about", "visimisi.json");
-
-function ensureFile() {
-    const dir = path.dirname(dataPath);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    if (!fs.existsSync(dataPath)) {
-        fs.writeFileSync(
-            dataPath,
-            JSON.stringify(
-                {
-                    visi: [
-                        {
-                            title: "",
-                            desc: ""
-                        }
-                    ],
-                    misi: [
-                        {
-                            title: "",
-                            badges: []
-                        }
-                    ]
-                },
-                null,
-                2
-            )
-        );
-    }
-}
+const NAME = "about/visimisi";
+const DEFAULTS = {
+    visi: [{ title: "", desc: "" }],
+    misi: [{ title: "", badges: [{ title: "" }] }],
+};
 
 export async function GET() {
     try {
-        ensureFile();
-        const raw = fs.readFileSync(dataPath, "utf-8");
-        return NextResponse.json(JSON.parse(raw || "{}"), { status: 200 });
-    } catch (e) {
+        const data = await readDoc(NAME, DEFAULTS);
+        return NextResponse.json(data);
+    } catch {
         return NextResponse.json({ error: "Failed to read visimisi.json" }, { status: 500 });
     }
 }
@@ -45,9 +19,9 @@ export async function GET() {
 export async function PUT(req) {
     try {
         const body = await req.json();
-        fs.writeFileSync(dataPath, JSON.stringify(body, null, 2));
+        await writeDoc(NAME, body);
         return NextResponse.json({ ok: true });
-    } catch (e) {
+    } catch {
         return NextResponse.json({ error: "Failed to save visimisi.json" }, { status: 500 });
     }
 }

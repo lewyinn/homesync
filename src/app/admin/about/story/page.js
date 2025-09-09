@@ -1,108 +1,63 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FaCheckCircle, FaChevronCircleLeft } from "react-icons/fa";
-import { FiUploadCloud } from "react-icons/fi";
+import { FaCheckCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
 const MySwal = withReactContent(Swal);
 
 export default function PageAboutStory() {
-    const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [form, setForm] = useState({ title: "", desc1: "", desc2: "" });
 
-    const [form, setForm] = useState({
-        title: "",
-        desc1: "",
-        desc2: "",
-    });
-
-    // Load data
     useEffect(() => {
         (async () => {
             try {
                 setLoading(true);
-                const res = await fetch("/api/admin/about/story", { cache: "no-store" });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Failed to fetch story");
-                setForm({
-                    title: data.title ?? "",
-                    desc1: data.desc1 ?? "",
-                    desc2: data.desc2 ?? "",
-                });
-            } catch (e) {
-                MySwal.fire("Error!", "Failed to load story data.", "error");
+                const r = await fetch("/api/admin/about/story", { cache: "no-store" });
+                const d = await r.json();
+                if (!r.ok) throw new Error(d.error || "Failed to fetch story");
+                setForm({ title: d.title ?? "", desc1: d.desc1 ?? "", desc2: d.desc2 ?? "" });
+            } catch {
+                MySwal.fire("Error", "Failed to load story data.", "error");
             } finally {
                 setLoading(false);
             }
         })();
     }, []);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
+    const handleChange = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
 
-    const handleSubmit = async (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setSaving(true);
         try {
-            const res = await fetch("/api/admin/about/story", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form)
+            const r = await fetch("/api/admin/about/story", {
+                method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form),
             });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || "Failed to save");
-
-            MySwal.fire("Success!", "Hero updated successfully!", "success").then(() => router.refresh());
-        } catch (error) {
-            MySwal.fire("Error!", error.message, "error");
+            const d = await r.json();
+            if (!r.ok) throw new Error(d.error || "Failed to save");
+            MySwal.fire("Success", "Story updated!", "success");
+        } catch (err) {
+            MySwal.fire("Error", err.message, "error");
         } finally {
             setSaving(false);
         }
     };
 
-    if (loading) return <div className="p-6 text-center">Loading about data...</div>;
+    if (loading) return <div className="p-6 text-center">Loading…</div>;
 
     return (
         <main className="p-6">
-            <div className="flex justify-between items-start gap-4 mb-2">
-                <h1 className="text-2xl font-bold mb-6">Edit About Hero</h1>
-            </div>
-
+            <h1 className="text-2xl font-bold mb-6">Edit Story</h1>
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 lg:p-8">
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    {/* Title */}
-                    <div className="md:col-span-2">
-                        <label className="block text-sm font-medium mb-1">Title</label>
-                        <input type="text" name="title" value={form.title} onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg" />
-                    </div>
-
-                    {/* Description 1 */}
-                    <div className="md:col-span-2">
-                        <label className="block text-sm font-medium mb-1">Description 1</label>
-                        <textarea name="desc1" rows="3" value={form.desc1} onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg"></textarea>
-                    </div>
-
-                    {/* Description 2 */}
-                    <div className="md:col-span-2">
-                        <label className="block text-sm font-medium mb-1">Description 2</label>
-                        <textarea name="desc2" rows="3" value={form.desc2} onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg"></textarea>
-                    </div>
-
-                    <div className="md:col-span-2 flex justify-end">
-                        <button type="submit" disabled={saving}
-                            className="px-6 py-2 bg-blue-600 text-white rounded flex items-center gap-2">
-                            {saving ? "Saving..." : "Save Changes"}
-                            <FaCheckCircle />
+                <form onSubmit={submit} className="grid grid-cols-1 gap-6">
+                    <input className="w-full px-4 py-2 border rounded-lg" name="title" value={form.title} onChange={handleChange} placeholder="Title" />
+                    <textarea className="w-full px-4 py-2 border rounded-lg" rows={4} name="desc1" value={form.desc1} onChange={handleChange} placeholder="Description 1" />
+                    <textarea className="w-full px-4 py-2 border rounded-lg" rows={4} name="desc2" value={form.desc2} onChange={handleChange} placeholder="Description 2" />
+                    <div className="flex justify-end">
+                        <button disabled={saving} className="px-6 py-2 bg-blue-600 text-white rounded flex items-center gap-2">
+                            {saving ? "Saving..." : "Save Changes"} <FaCheckCircle />
                         </button>
                     </div>
                 </form>

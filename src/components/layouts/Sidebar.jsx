@@ -75,7 +75,7 @@ export default function Sidebar() {
                     </Link>
 
                     {/* Dropdown Beranda */}
-                    <div className="space-y-1">
+                    {/* <div className="space-y-1">
                         <button
                             onClick={() => setBerandaOpen(!berandaOpen)}
                             className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
@@ -126,10 +126,10 @@ export default function Sidebar() {
                                 Kontak
                             </Link>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Dropdown About */}
-                    <div className="space-y-1">
+                    {/* <div className="space-y-1">
                         <button
                             onClick={() => setAboutOpen(!aboutOpen)}
                             className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
@@ -179,14 +179,8 @@ export default function Sidebar() {
                                     : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
                                 Milestones / Timeline
                             </Link>
-                            {/* <Link href="/admin/about/cta"
-                                className={`block px-2 py-2 rounded-md text-sm transition-colors ${isActive('/admin/about/cta')
-                                    ? 'bg-blue-100 dark:bg-blue-600/20 text-blue-700 dark:text-blue-400'
-                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-                                Call To Action (CTA)
-                            </Link> */}
                         </div>
-                    </div>
+                    </div> */}
 
                     <Link href="/admin/products"
                         className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive('/admin/products')
